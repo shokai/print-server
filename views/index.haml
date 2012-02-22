@@ -1,0 +1,14 @@
+- content_for :title do
+  = @title
+
+- content_for :head do
+  :javascript
+    var app_root = "#{app_root}";
+    var omikuji_api = app_root+'/omikuji.json';
+  %script{:type => 'text/javascript', :src => "#{app_root}/js/main.js"}
+
+%div
+  %h2 Upload File
+  %form{:method => :post, :action => "#{app_root}/file", :enctype => 'multipart/form-data'}
+    %input{:type => :file, :name => 'file'}
+    %input{:type => 'submit', :name => 'upload', :value => 'upload'}
