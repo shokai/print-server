@@ -8,7 +8,7 @@ class Printer
   def self.list
     ps = `lpstat -s`.split(/[\r\n]/)
     ps.shift
-    ps.map{|i| i.scan(/^[^\s]+/).first}
+    ps.map{|i| i.scan(/^[^\s]+/).first}.uniq
   end
 
   def initialize(name)
