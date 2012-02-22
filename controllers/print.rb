@@ -10,6 +10,7 @@ post '/file' do
     haml :message
   else
     data = params[:file][:tempfile].read
+    Dir.mkdir filedir unless File.exists? filedir
     fname = "#{filedir}/#{Digest::MD5.hexdigest data}#{File.extname params[:file][:filename]}"
     File.open(fname, 'wb') do |f|
       f.write data
