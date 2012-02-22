@@ -10,6 +10,9 @@
       Printer :
       %select{:name => 'printer', :size => 1}
         - @printers.each do |pr|
-          %option{:value => pr}= pr
+          - if pr == @@conf['default_printer']
+            %option{:value => pr, :selected => true}= pr
+          - else
+            %option{:value => pr}= pr
     %div
       %input{:type => 'submit', :name => 'upload', :value => 'Print!!'}
