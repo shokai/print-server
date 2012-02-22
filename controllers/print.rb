@@ -1,6 +1,10 @@
 
+get '/list.json' do
+  Printer.list.to_json
+end
+
 post '/file' do
-  if !params[:file]
+  if !params[:file] or !params[:printer]
     status 400
     @mes = 'bad request'
   else
@@ -11,9 +15,15 @@ post '/file' do
     end
     unless File::exists? fname
       status 500
-      @mes = 'upload error'
+      @mes = 'file upload error'
     else
-      @mes = 'success'
+      begin
+        Printer.new(params[:printer]).print(fname)
+        @mes = 'printing!!'
+      rescue => e
+        STDERR.puts e
+        @mes = e.to_s
+      end
     end
   end
 end

@@ -35,11 +35,8 @@ if $0 == __FILE__
     begin
       pr = Printer.new(ARGV.shift)
       puts "printer : #{pr.name}"
-      if pr.print(ARGV.shift)
-        puts "printing!!"
-      else
-        puts "print error"
-      end
+      pr.print(ARGV.shift)
+      puts "printing!!"
     rescue => e
       STDERR.puts e
     end

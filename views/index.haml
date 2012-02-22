@@ -8,7 +8,14 @@
   %script{:type => 'text/javascript', :src => "#{app_root}/js/main.js"}
 
 %div
-  %h2 Upload File
+  %h2 Print File
   %form{:method => :post, :action => "#{app_root}/file", :enctype => 'multipart/form-data'}
-    %input{:type => :file, :name => 'file'}
-    %input{:type => 'submit', :name => 'upload', :value => 'upload'}
+    %div
+      File :
+      %input{:type => :file, :name => 'file'}
+      Printer :
+      %select{:name => 'printer', :size => 1}
+        - @printers.each do |pr|
+          %option{:value => pr}= pr
+    %div
+      %input{:type => 'submit', :name => 'upload', :value => 'Print!!'}

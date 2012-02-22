@@ -5,6 +5,7 @@ end
 
 get '/' do
   @title = @@conf['title']
+  @printers = Printer.list
   haml :index
 end
 
