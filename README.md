@@ -9,6 +9,7 @@ Upload File and Print.
 Install Dependencies
 --------------------
 
+    % brew install webkit2png imagemagick pdfjam
     % gem install bundler
     % bundle install
 
