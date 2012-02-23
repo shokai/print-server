@@ -1,4 +1,7 @@
 #!/usr/bin/env ruby
+## capture webpage and make PDF
+## brew install webkit2png imagemagick pdfjam
+
 require 'rubygems'
 require 'ArgsParser'
 require 'FileUtils'
