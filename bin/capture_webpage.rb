@@ -10,7 +10,7 @@ parser = ArgsParser.parser
 parser.bind(:help, :h, 'show help')
 parser.comment(:url, 'URL')
 parser.bind(:width, :w, 'page width', 1200)
-parser.bind(:rotate, 'rotate page', false)
+parser.comment(:landscape, 'landscape layout', false)
 parser.bind(:out, :o, 'output file', 'out.pdf')
 first, params = parser.parse(ARGV)
 
@@ -37,7 +37,7 @@ x,y = `identify '#{png}'`.split(/\s/).select{|i|
 }.first.split('x').map{|i| i.to_i}
 
 w = x
-h = (w*1.41).to_i
+h = params[:landscape] ? (w/1.41).to_i : (w*1.41).to_i
 
 parts = 0.upto(y/h).map{|i|
   fname = "#{tmp_dname}/#{i}.png"
@@ -46,7 +46,8 @@ parts = 0.upto(y/h).map{|i|
   fname
 }
 
-puts cmd = "pdfjam --outfile '#{params[:out]}' --pdftitle '#{params[:url]}' #{parts.join(' ')}"
+scape = params[:landscape] ? 'landscape' : 'no-landscape'
+puts cmd = "pdfjam --#{scape} --outfile '#{params[:out]}' --pdftitle '#{params[:url]}' #{parts.join(' ')}"
 system cmd
 
 Dir.glob("#{tmp_dname}/*").each{|f|
