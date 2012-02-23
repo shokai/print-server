@@ -2,6 +2,8 @@
 *.tmp
 ~*
 *#*
+.DS_Store
 .sass-cache
 config.yaml
 files
+*tmp
