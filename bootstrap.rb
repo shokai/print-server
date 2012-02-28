@@ -8,6 +8,7 @@ require 'json'
 require 'haml'
 require 'sass'
 require 'digest/md5'
+require 'tempfile'
 
 begin
   @@conf = YAML::load open(File.dirname(__FILE__)+'/config.yaml').read
