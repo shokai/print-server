@@ -3,44 +3,38 @@
 ## brew install webkit2png imagemagick pdfjam
 
 require 'rubygems'
-require 'FileUtils'
+require 'tmpdir'
 
 class WebCapture
   def self.capture(params)
     tmp_fname = "#{Time.now.to_i}_#{Time.now.usec}"
-    tmp_dname = File.dirname(params[:out])+'/'+tmp_fname
-    
-    FileUtils.mkdir_p(tmp_dname) unless File.exists? tmp_dname
-    puts cmd = "webkit2png --dir '#{tmp_dname}' -o #{tmp_fname} -F -W #{params[:width].to_i} '#{params[:url]}'"
-    system cmd
-    
-    unless png = Dir.glob("#{tmp_dname}/#{tmp_fname}*-full.png")[0]
-      STDERR.puts "capture failed"
-      exit 1
-    end
-    
-    x,y = `identify '#{png}'`.split(/\s/).select{|i|
-      i =~ /^\d+x\d+$/
-    }.first.split('x').map{|i| i.to_i}
-    
-    w = x
-    h = params[:landscape] ? (w/1.41).to_i : (w*1.41).to_i
-    
-    parts = 0.upto(y/h).map{|i|
-      fname = "#{tmp_dname}/#{i}.png"
-      puts cmd = "convert -crop #{w}x#{h}+0+#{h*i} '#{png}' '#{fname}'"
+    Dir.mktmpdir('print-server') do |dir|
+      puts cmd = "webkit2png --dir '#{dir}' -o #{tmp_fname} -F -W #{params[:width].to_i} '#{params[:url]}'"
       system cmd
-      fname
-    }
-    
-    scape = params[:landscape] ? 'landscape' : 'no-landscape'
-    puts cmd = "pdfjam --#{scape} --outfile '#{params[:out]}' --pdftitle '#{params[:url]}' #{parts.join(' ')}"
-    system cmd
-    
-    Dir.glob("#{tmp_dname}/*").each{|f|
-      File.delete f
-    }
-    Dir.rmdir tmp_dname
+      
+      unless png = Dir.glob("#{dir}/#{tmp_fname}*-full.png")[0]
+        STDERR.puts "capture failed"
+        exit 1
+      end
+      
+      x,y = `identify '#{png}'`.split(/\s/).select{|i|
+        i =~ /^\d+x\d+$/
+      }.first.split('x').map{|i| i.to_i}
+      
+      w = x
+      h = params[:landscape] ? (w/1.41).to_i : (w*1.41).to_i
+      
+      parts = 0.upto(y/h).map{|i|
+        fname = "#{dir}/#{i}.png"
+        puts cmd = "convert -crop #{w}x#{h}+0+#{h*i} '#{png}' '#{fname}'"
+        system cmd
+        fname
+      }
+      
+      scape = params[:landscape] ? 'landscape' : 'no-landscape'
+      puts cmd = "pdfjam --#{scape} --outfile '#{params[:out]}' --pdftitle '#{params[:url]}' #{parts.join(' ')}"
+      system cmd
+    end
   end
 end
 
