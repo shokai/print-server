@@ -1,6 +1,6 @@
 Print Server
 ============
-Upload File and Print.
+Print by File uploading or URL posting.
 
 * Ruby 1.8.7+
 * LPR Printer
@@ -29,6 +29,8 @@ Run
 
 open [http://localhost:8080](http://localhost:8080)
 
+
+<img src="http://gyazo.com/9d89e6fbd5699f9856256f2137f26703.png">
 
 Deploy
 ------
