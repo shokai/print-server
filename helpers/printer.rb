@@ -19,6 +19,7 @@ class Printer
   end
 
   def print(file_name)
+    raise Error.new("File not exists (#{file_name})") unless File.exists? file_name
     unless system "lpr -P #{@name} #{file_name}"
       raise Error.new('Print Error')
     end
