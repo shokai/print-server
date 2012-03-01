@@ -13,7 +13,8 @@ post '/file' do
     begin
       f.write params[:file][:tempfile].read
       pr = Printer.new(params[:printer])
-      pr.print(fname) unless @@conf['no_print']
+      f.close
+      pr.print(f.path) unless @@conf['no_print']
       @mes = 'printing!!'
       haml :message
     rescue => e
@@ -22,8 +23,27 @@ post '/file' do
       @mes = e.to_s
       haml :message
     ensure
-      f.close
       f.delete
+    end
+  end
+end
+
+post '/url' do
+  if !params[:url] or !params[:printer]
+    status 400
+    @mes = 'bad request'
+    haml :message
+  else
+    begin
+      pr = Printer.new(params[:printer])
+      PrintWebpage.print(pr, params[:url])
+      @mes = "#{params[:url]} printing!!"
+      haml :message
+    rescue => e
+      STDERR.puts e
+      status 500
+      @mes = e.to_s
+      haml :message
     end
   end
 end

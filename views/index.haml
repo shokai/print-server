@@ -15,4 +15,18 @@
           - else
             %option{:value => pr}= pr
     %div
-      %input{:type => 'submit', :name => 'upload', :value => 'Print!!'}
+      %input{:type => :submit, :name => 'upload', :value => 'Print!!'}
+  %h2 Print URL
+  %form{:method => :post, :action => "#{app_root}/url"}
+    %div
+      URL :
+      %input{:type => :text, :name => 'url', :size => 50}
+      Printer :
+      %select{:name => 'printer', :size => 1}
+        - @printers.each do |pr|
+          - if pr == @@conf['default_printer']
+            %option{:value => pr, :selected => true}= pr
+          - else
+            %option{:value => pr}= pr
+    %div
+      %input{:type => :submit, :value => 'Print!!'}
