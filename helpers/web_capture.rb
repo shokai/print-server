@@ -31,8 +31,8 @@ class WebCapture
       h = params[:landscape] ? (w/1.41).to_i : (w*1.41).to_i
       
       parts = 0.upto(y/h).map{|i|
-        fname = "#{dir}/#{i}.png"
-        puts cmd = "convert -crop #{w}x#{h}+0+#{h*i} '#{png}' '#{fname}'"
+        fname = "#{dir}/#{i}.jpg"
+        puts cmd = "convert -quality 95 -crop #{w}x#{h}+0+#{h*i} '#{png}' '#{fname}'"
         system cmd
         fname
       }
