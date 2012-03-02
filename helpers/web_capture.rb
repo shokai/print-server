@@ -6,6 +6,7 @@ require 'rubygems'
 require 'capybara-webkit'
 require 'headless'
 require 'tmpdir'
+require 'prawn'
 
 class WebCapture
   class Error < StandardError
@@ -36,9 +37,12 @@ class WebCapture
         fname
       }
       
-      scape = params[:landscape] ? 'landscape' : 'no-landscape'
-      puts cmd = "pdfjam --#{scape} --outfile '#{params[:out]}' --pdftitle '#{params[:url]}' #{parts.join(' ')}"
-      system cmd
+      Prawn::Document.generate(params[:out]) do
+        parts.each do |img|
+          text params[:url]
+          image img, :fit => [bounds.width, bounds.height-20]
+        end
+      end
     end
   end
 end
