@@ -11,7 +11,17 @@ Print by File uploading or URL posting.
 Install Dependencies
 --------------------
 
-    % brew install webkit2png imagemagick pdfjam
+for Mac.
+
+    % brew install qt
+
+for Ubuntu.
+
+    % sudo apt-get install qt4-dev-tools xvfb
+
+
+Install Rubygems.
+
     % gem install bundler
     % bundle install
 

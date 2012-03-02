@@ -1,22 +1,27 @@
 #!/usr/bin/env ruby
 ## capture webpage and make PDF
-## brew install webkit2png imagemagick pdfjam
+## brew install capybara capybara-webkit headless
 
 require 'rubygems'
+require 'capybara-webkit'
+require 'headless'
 require 'tmpdir'
 
 class WebCapture
+  class Error < StandardError
+  end
   def self.capture(params)
-    tmp_fname = "#{Time.now.to_i}_#{Time.now.usec}"
+    tmp_fname = "capture.png"
     Dir.mktmpdir('print-server') do |dir|
-      puts cmd = "webkit2png --dir '#{dir}' -o #{tmp_fname} -F -W #{params[:width].to_i} '#{params[:url]}'"
-      system cmd
-      
-      unless png = Dir.glob("#{dir}/#{tmp_fname}*-full.png")[0]
-        STDERR.puts "capture failed"
-        exit 1
+      png = "#{dir}/#{tmp_fname}"
+      Headless.ly do
+        driver = Capybara::Driver::Webkit.new 'web_capture'
+        driver.visit params[:url]
+        driver.render png
       end
       
+      raise Error.new "capture failed" unless File.exists? png
+
       x,y = `identify '#{png}'`.split(/\s/).select{|i|
         i =~ /^\d+x\d+$/
       }.first.split('x').map{|i| i.to_i}
