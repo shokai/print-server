@@ -5,13 +5,17 @@ class Printer
 
   attr_reader :name
 
+  def self.default
+    `lpstat -s`.split(/[\r\n]/)[0].scan(/[a-zA-Z0-9_\-]+$/).first.first
+  end
+
   def self.list
     ps = `lpstat -s`.split(/[\r\n]/)
     ps.shift
     ps.map{|i| i.scan(/^[^\s]+/).first}.uniq
   end
 
-  def initialize(name)
+  def initialize(name=Printer.default)
     unless Printer.list.include? name
       raise Error.new("Printer \"#{name}\" is not exists")
     end
@@ -30,6 +34,8 @@ if $0 == __FILE__
   if ARGV.size < 2
     puts "== printer list =="
     puts Printer.list
+    puts "== defualt printer =="
+    puts Printer.default
     puts "== print file =="
     puts "ruby printer.rb PRINTER_NAME FILE_NAME"
   else

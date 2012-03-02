@@ -4,7 +4,7 @@ get '/list.json' do
 end
 
 post '/file' do
-  if !params[:file] or !params[:file][:tempfile] or !params[:printer]
+  if !params[:file] or !params[:file][:tempfile]
     status 400
     @mes = 'bad request'
     haml :message
@@ -12,7 +12,7 @@ post '/file' do
     f = Tempfile.new('print-server')
     begin
       f.write params[:file][:tempfile].read
-      pr = Printer.new(params[:printer])
+      pr = Printer.new(params[:printer] || @@conf['default_printer'] || Printer.default)
       f.close
       pr.print(f.path) unless @@conf['no_print']
       @mes = 'printing!!'
@@ -29,13 +29,13 @@ post '/file' do
 end
 
 post '/url' do
-  if !params[:url] or !params[:printer]
+  if !params[:url]
     status 400
     @mes = 'bad request'
     haml :message
   else
     begin
-      pr = Printer.new(params[:printer])
+      pr = Printer.new(params[:printer] || @@conf['default_printer'] || Printer.default)
       PrintWebpage.print(pr, params[:url])
       @mes = "#{params[:url]} printing!!"
       haml :message
