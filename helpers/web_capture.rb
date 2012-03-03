@@ -32,7 +32,7 @@ class WebCapture
       
       parts = 0.upto(y/h).map{|i|
         fname = "#{dir}/#{i}.jpg"
-        puts cmd = "convert -quality 95 -crop #{w}x#{h}+0+#{h*i} '#{png}' '#{fname}'"
+        puts cmd = "convert -quality 100 -crop #{w}x#{h}+0+#{h*i} '#{png}' '#{fname}'"
         system cmd
         fname
       }
