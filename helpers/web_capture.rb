@@ -33,6 +33,8 @@ class WebCapture
         fname = "#{dir}/#{i}.jpg"
         img = MiniMagick::Image.open png
         img.crop("#{w}x#{h}+0+#{i*h}")
+        img.format('jpg')
+        img.quality('100')
         img.write fname
         fname
       }
