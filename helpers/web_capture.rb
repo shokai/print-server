@@ -46,6 +46,9 @@ class WebCapture
           image img, :fit => [bounds.width, bounds.height-20]
         end
       end
+
+      raise Error.new 'could not make PDF!!' unless File.exists? params[:out]
+      params[:out]
     end
   end
 end
@@ -70,5 +73,6 @@ if __FILE__ == $0
     exit 1
   end
 
-  WebCapture.capture(params)
+  out = WebCapture.capture(params)
+  puts " => #{out}"
 end
