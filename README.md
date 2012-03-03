@@ -13,11 +13,11 @@ Install Dependencies
 
 for Mac.
 
-    % brew install qt
+    % brew install qt imagemagick
 
 for Ubuntu.
 
-    % sudo apt-get install qt4-dev-tools xvfb
+    % sudo apt-get install qt4-dev-tools xvfb imagemagick
 
 
 Install Rubygems.
