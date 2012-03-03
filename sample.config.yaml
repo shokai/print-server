@@ -1,4 +1,5 @@
 title : 'Print Server'
-default_printer : 'Canon_MP610_series'
+
+# default_printer : 'Canon_MP610_series'
 
 # no_print : true
