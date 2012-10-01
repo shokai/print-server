@@ -12,9 +12,9 @@ post '/file' do
     f = Tempfile.new('print-server')
     begin
       f.write params[:file][:tempfile].read
-      pr = Printer.new(params[:printer] || @@conf['default_printer'] || Printer.default)
+      pr = Printer.new(params[:printer] || Conf['default_printer'] || Printer.default)
       f.close
-      pr.print(f.path) unless @@conf['no_print']
+      pr.print(f.path) unless Conf['no_print']
       @mes = 'printing!!'
       haml :message
     rescue => e
@@ -35,7 +35,7 @@ post '/url' do
     haml :message
   else
     begin
-      pr = Printer.new(params[:printer] || @@conf['default_printer'] || Printer.default)
+      pr = Printer.new(params[:printer] || Conf['default_printer'] || Printer.default)
       PrintWebpage.print(pr, params[:url])
       @mes = "#{params[:url]} printing!!"
       haml :message

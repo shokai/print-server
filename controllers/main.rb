@@ -1,10 +1,9 @@
-# -*- coding: utf-8 -*-
 before '/*.json' do
   content_type 'application/json'
 end
 
 before '/*' do
-  @title = @@conf['title']
+  @title = Conf['title']
 end
 
 get '/' do

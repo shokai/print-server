@@ -1,9 +1,8 @@
-*.lock
 *.tmp
 ~*
 *#*
 .DS_Store
 .sass-cache
-config.yaml
+config.yml
 files
 *tmp
