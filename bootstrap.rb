@@ -1,14 +1,3 @@
-require 'rubygems'
-require 'bundler/setup'
-require 'rack'
-require 'sinatra/reloader' if development?
-require 'sinatra/content_for'
-require 'yaml'
-require 'json'
-require 'haml'
-require 'sass'
-require 'digest/md5'
-require 'tempfile'
 
 begin
   @@conf = YAML::load open(File.dirname(__FILE__)+'/config.yaml').read
@@ -25,6 +14,3 @@ end
     require rb
   end
 end
-
-set :haml, :escape_html => true
-
